@@ -13,121 +13,8 @@
 -(id)initWithKeyAndMessage: (NSString*)varKey
                    message: (NSString*) varMessage {
     if (self = [super init]) {
-        
-        //11, 15, 4, 13, 7, 9, 3, 2, 5, 14, 6, 10, 12, 1
-        self->PC1 = [NSArray arrayWithObjects:  [NSNumber numberWithInt:11],
-                                                [NSNumber numberWithInt:15],
-                                                [NSNumber numberWithInt:4],
-                                                [NSNumber numberWithInt:13],
-                                                [NSNumber numberWithInt:7],
-                                                [NSNumber numberWithInt:9],
-                                                [NSNumber numberWithInt:3],
-                                                [NSNumber numberWithInt:2],
-                                                [NSNumber numberWithInt:5],
-                                                [NSNumber numberWithInt:14],
-                                                [NSNumber numberWithInt:6],
-                                                [NSNumber numberWithInt:10],
-                                                [NSNumber numberWithInt:12],
-                                                [NSNumber numberWithInt:1],
-                                                nil];
-        
-        //6, 11, 4, 8, 13, 3, 12, 5, 1, 10, 2, 9
-        self->PC2 = [NSArray arrayWithObjects:  [NSNumber numberWithInt:6],
-                                                [NSNumber numberWithInt:11],
-                                                [NSNumber numberWithInt:4],
-                                                [NSNumber numberWithInt:8],
-                                                [NSNumber numberWithInt:13],
-                                                [NSNumber numberWithInt:3],
-                                                [NSNumber numberWithInt:12],
-                                                [NSNumber numberWithInt:5],
-                                                [NSNumber numberWithInt:1],
-                                                [NSNumber numberWithInt:10],
-                                                [NSNumber numberWithInt:2],
-                                                [NSNumber numberWithInt:9],
-                                                nil];
-        
-        //{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1}
-        self->LEFT_ROTATIONS = [NSArray arrayWithObjects:   [NSNumber numberWithInt:1],
-                                                            [NSNumber numberWithInt:1],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:1],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:2],
-                                                            [NSNumber numberWithInt:1],
-                                                            nil];
-        
-        //{10, 6, 14, 2, 8, 16, 12, 4, 1, 13, 7, 9, 5, 11, 3, 15}
-        self->IP = [NSArray arrayWithObjects:
-                                [NSNumber numberWithInt:10],
-                                [NSNumber numberWithInt:6],
-                                [NSNumber numberWithInt:14],
-                                [NSNumber numberWithInt:2],
-                                [NSNumber numberWithInt:8],
-                                [NSNumber numberWithInt:16],
-                                [NSNumber numberWithInt:12],
-                                [NSNumber numberWithInt:4],
-                                [NSNumber numberWithInt:1],
-                                [NSNumber numberWithInt:13],
-                                [NSNumber numberWithInt:7],
-                                [NSNumber numberWithInt:9],
-                                [NSNumber numberWithInt:5],
-                                [NSNumber numberWithInt:11],
-                                [NSNumber numberWithInt:3],
-                                [NSNumber numberWithInt:15],
-                                nil];
-        
-        //{9, 4, 15, 8, 13, 2, 11, 5, 12, 1, 14, 7, 10, 3, 16, 6}
-        self->IP_INVERSE = [NSArray arrayWithObjects:
-                    [NSNumber numberWithInt:9],
-                    [NSNumber numberWithInt:4],
-                    [NSNumber numberWithInt:15],
-                    [NSNumber numberWithInt:8],
-                    [NSNumber numberWithInt:13],
-                    [NSNumber numberWithInt:2],
-                    [NSNumber numberWithInt:11],
-                    [NSNumber numberWithInt:5],
-                    [NSNumber numberWithInt:12],
-                    [NSNumber numberWithInt:1],
-                    [NSNumber numberWithInt:14],
-                    [NSNumber numberWithInt:7],
-                    [NSNumber numberWithInt:10],
-                    [NSNumber numberWithInt:3],
-                    [NSNumber numberWithInt:16],
-                    [NSNumber numberWithInt:6],
-                    nil];
-        
-        //{8, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 1}
-        self->EXPANSION = [NSArray arrayWithObjects:
-                            [NSNumber numberWithInt:8],
-                            [NSNumber numberWithInt:1],
-                            [NSNumber numberWithInt:2],
-                            [NSNumber numberWithInt:3],
-                            [NSNumber numberWithInt:4],
-                            [NSNumber numberWithInt:5],
-                            [NSNumber numberWithInt:4],
-                            [NSNumber numberWithInt:5],
-                            [NSNumber numberWithInt:6],
-                            [NSNumber numberWithInt:7],
-                            [NSNumber numberWithInt:8],
-                            [NSNumber numberWithInt:1],
-                            nil];
-        
-        /*int IP_[16] = {10, 6, 14, 2, 8, 16, 12, 4, 1, 13, 7, 9, 5, 11, 3, 15};
-        int IP_INVERSE[16] = {9, 4, 15, 8, 13, 2, 11, 5, 12, 1, 14, 7, 10, 3, 16, 6};
-        int EXPANSION[14] = {8, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 1};
-        int P[8] = {6, 4, 7, 3, 5, 1, 8, 2};
-        int PC2[14] = {6, 11, 4, 8, 13, 3, 12, 5, 1, 10, 2, 9};
-        int LEFT_ROTATIONS[16] = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};*/
-        
+
+        [self initNumbers];
         self->encKey = [varKey copy];
         self->message = [varMessage copy];
         
@@ -142,7 +29,7 @@
         
         self->keyBinary = keyBinaryTmp;
         
-        NSLog(@"Converted key to binary array: %@", self->keyBinary);
+        //NSLog(@"Converted key to binary array: %@", self->keyBinary);
         
         self->subKeys = [NSMutableArray arrayWithCapacity:16];
         
@@ -152,8 +39,38 @@
     return (self);
 }
 
+-(id)initWithKeyAndCipher: (NSString*)varKey
+                   cipherText: (NSString*) varCipher {
+    if (self = [super init]) {
+        
+        [self initNumbers];
+        self->encKey = [varKey copy];
+        self->cipher = [varCipher copy];
+        
+        NSLog(@"Initialized DEShi with key: %@, cipher: %@", self->encKey, self->cipher);
+        
+        // converting the key to binary notation
+        NSMutableArray *keyBinaryTmp = [NSMutableArray arrayWithCapacity:([self->encKey length]*8)];
+        size_t i;
+        for (i = 0; i < [self->encKey length]; i++) {
+            [keyBinaryTmp addObjectsFromArray:[self arrayOfBinaryNumbersForInt:[self->encKey characterAtIndex:i]]];
+        }
+        
+        self->keyBinary = keyBinaryTmp;
+        
+        //NSLog(@"Converted key to binary array: %@", self->keyBinary);
+        
+        self->subKeys = [NSMutableArray arrayWithCapacity:16];
+        
+        // generate subkeys
+        [self generateSubkeys];
+    }
+    return (self);
+}
+
+
 -(NSArray*) arrayOfBinaryNumbersForInt: (int) integer {
-    NSLog(@"%d", integer);
+    //NSLog(@"%d", integer);
     
     NSMutableString *string = [NSMutableString string];
     for(NSInteger numberCopy = integer; numberCopy > 0; numberCopy >>= 1)
@@ -172,7 +89,7 @@
     NSString *finalString = [NSString stringWithString:string];
     finalString = [finalString substringToIndex:([string length] - 1)];
     NSArray *result = [finalString componentsSeparatedByString:@","];
-    NSLog(@"arrayOfBinaryNumbersForInt: %@", result);
+    //NSLog(@"arrayOfBinaryNumbersForInt: %@", result);
     
     return (result);
 }
@@ -206,8 +123,8 @@
     
         NSInteger shifts = [[self->LEFT_ROTATIONS objectAtIndex: i] integerValue];
         
-        NSLog(@"round %d", i);
-        NSLog(@"before: L: %@ R: %@", leftPart, rightPart);
+        //NSLog(@"round %d", i);
+        //NSLog(@"before: L: %@ R: %@", leftPart, rightPart);
         
         int j = 0;
         while (j < shifts) {
@@ -216,40 +133,118 @@
             j++;
         }
     
-        NSLog(@"after: L: %@ R: %@", leftPart, rightPart);
+        //NSLog(@"after: L: %@ R: %@", leftPart, rightPart);
         
         NSArray *leftRight = [leftPart arrayByAddingObjectsFromArray: rightPart];
         
-        NSLog(@"LR: %@", leftRight);
+        //NSLog(@"LR: %@", leftRight);
         
         [self->subKeys insertObject:[self permutate:leftRight permutation:self->PC2] atIndex:i];
         
         i++;
     }
     
-    NSLog(@"1st subkey: %@", [self->subKeys objectAtIndex:0]);
+    //NSLog(@"1st subkey: %@", [self->subKeys objectAtIndex:0]);
 }
 
 -(NSString*) encrypt {
-    
     NSMutableString *result = [NSMutableString string];
     
     // read the ascii message in blocks of 16 bit
     int i = 0;
     while (i < [self->message length]) {
         // convert parts of the ascii message to a bit array
-    
         NSArray *firstArray = [self arrayOfBinaryNumbersForInt: [self->message characterAtIndex:i]];
         NSArray *secondArray = [firstArray arrayByAddingObjectsFromArray: [self arrayOfBinaryNumbersForInt:[self->message characterAtIndex:i+1]]];
         
-        NSLog(@"--------------------- encryption ------------------------");
-        NSLog(@"%@", secondArray);
+        //NSLog(@"--------------------- encryption ------------------------");
+        //NSLog(@"%@", secondArray);
+        
+        NSNumber *left = [self binaryStringToDecimal:[firstArray componentsJoinedByString:@""]];
+        NSNumber *right = [self binaryStringToDecimal:[[self arrayOfBinaryNumbersForInt:[self->message characterAtIndex:i+1]] componentsJoinedByString:@""]];
+        
+        NSLog(@"left before encryption: %ld", [left integerValue]);
+        NSLog(@"right before encryption: %ld",[right integerValue]);
         
         NSArray *data = [self permutate:secondArray permutation:self->IP];
         NSArray *encrypted_data = [self deshi:data type:0];
         
+        //NSLog(@"Encrypted data: %@", encrypted_data);
+        
+        // part this into 2x8 for binary to ascii conversion
+        NSArray *leftArray = [encrypted_data subarrayWithRange:NSMakeRange(0, 8)];
+        NSArray *rightArray = [encrypted_data subarrayWithRange:NSMakeRange(8, 8)];
+        /*
+        //[result appendString:[NSString stringWithFormat:@"%c", left]];
+        //[result appendString:[NSString stringWithFormat:@"%c", right]];
+        [result appendString: [NSString stringWithFormat:@"%0x", left]];
+        [result appendString: [NSString stringWithFormat:@"%0x", right]];
+        //[result appendString: [[NSString alloc] initWithBytes: &right length: 1 encoding:NSASCIIStringEncoding]];*/
+        
+        [result appendString: [NSString stringWithString:[leftArray componentsJoinedByString:@""]]];
+        [result appendString: [NSString stringWithString:[rightArray componentsJoinedByString:@""]]];
         i+=2;
     }
+    
+    //NSLog(@"final result as string: %@", result);
+    
+    return (result);
+}
+
+-(NSString*) decrypt {
+    
+    NSMutableString *result = [NSMutableString string];
+    
+    // first, convert the whole hex string as binary
+    
+    // read the hex message in blocks of 16 bit
+    int i = 0;
+    while (i < [self->cipher length]) {
+        
+        NSString *firstPart = [self->cipher substringWithRange:NSMakeRange(i, 8)];
+        NSString *secondPart = [self->cipher substringWithRange:NSMakeRange(i+8, 8)];
+        
+        //NSLog(@"first part: %@", firstPart);
+        //NSLog(@"second part: %@", secondPart);
+        
+        // we first convert them to decimal again, so we can use our own arrayOfBinaryNumbersForInt - that's tricky! :D
+        NSNumber *first = [self binaryStringToDecimal:firstPart];
+        NSNumber *second = [self binaryStringToDecimal:secondPart];
+
+        //NSLog(@"first int: %ld", [first integerValue]);
+        //NSLog(@"second int: %ld", [second integerValue]);
+        
+        NSArray *firstArray = [self arrayOfBinaryNumbersForInt:[first integerValue]];
+        NSArray *secondArray = [self arrayOfBinaryNumbersForInt:[second integerValue]];
+        
+        NSArray *finalArray = [firstArray arrayByAddingObjectsFromArray: secondArray];
+        
+        //NSLog(@"--------------------- decryption ------------------------");
+        //NSLog(@"%@", finalArray);
+        
+        NSArray *data = [self permutate:finalArray permutation:self->IP];
+        NSArray *decrypted_data = [self deshi:data type:1];
+        
+        //NSLog(@"decrypted data: %@", decrypted_data);
+        
+        // part this into 2x8 for binary to ascii conversion
+        NSArray *leftArrayDecrypted = [decrypted_data subarrayWithRange:NSMakeRange(0, 8)];
+        NSArray *rightArrayDecrypted = [decrypted_data subarrayWithRange:NSMakeRange(8, 8)];
+        
+        NSNumber *left = [self binaryStringToDecimal:[leftArrayDecrypted componentsJoinedByString:@""]];
+        NSNumber *right = [self binaryStringToDecimal:[rightArrayDecrypted componentsJoinedByString:@""]];
+        
+        //NSLog(@"left decrypted: %ld", [left integerValue]);
+        //NSLog(@"left ascii: %c", [left integerValue]);
+        [result appendFormat:@"%c", [left integerValue]];
+        //NSLog(@"right decrypted: %ld", [right integerValue]);
+        //NSLog(@"right ascii: %c", [right integerValue]);
+        [result appendFormat:@"%c", [right integerValue]];
+        
+        i+=16;
+    }
+
+    //NSLog(@"final result as string: %@", result);
     
     return (result);
 }
@@ -284,7 +279,57 @@
         // xor R with subkey
         R = [self xorTwoNSArrays:R second:subkey];
         
-        NSLog(@"DESHI round %d, Xor'd R: %@", i, R);
+        // divide the 12-bit array into 2x6-bit for the 2 sboxes
+        NSMutableArray *R1 = [R subarrayWithRange:NSMakeRange(0, 6)];
+        NSMutableArray *R2 = [R subarrayWithRange:NSMakeRange(6, 6)];
+        
+        NSMutableArray *blocks = [NSMutableArray arrayWithObjects:R1, R2, nil];
+        
+        int j = 0;
+        NSMutableArray *sBoxResults = [NSMutableArray array];
+        while (j < [blocks count]) {
+            NSMutableArray *currentBlock = [blocks objectAtIndex:j];
+            
+            // determine the row: that's the first and the last bit (position 0 and 5) from binary to decimal
+            NSMutableString *rowString = [NSMutableString string];
+            [rowString insertString:[[currentBlock objectAtIndex:0] stringValue] atIndex:0];
+            [rowString insertString:[[currentBlock objectAtIndex:5] stringValue] atIndex:1];
+            NSNumber *row = [self binaryStringToDecimal:rowString];
+            
+            // determine the col: that's the remaining positions
+            NSMutableString *colString = [NSMutableString string];
+            [colString insertString:[[currentBlock objectAtIndex:1] stringValue] atIndex:0];
+            [colString insertString:[[currentBlock objectAtIndex:2] stringValue] atIndex:1];
+            [colString insertString:[[currentBlock objectAtIndex:3] stringValue] atIndex:2];
+            [colString insertString:[[currentBlock objectAtIndex:4] stringValue] atIndex:3];
+            NSNumber *col = [self binaryStringToDecimal:colString];
+            
+            //NSLog(@"ROW: %ldd, COL: %ldd", [row integerValue], [col integerValue]);
+            
+            // now fetch the number from the sbox by first getting the currect array
+            NSArray *sBox = [self->SBOXES objectAtIndex:j];
+            NSArray *sBoxResult = [sBox objectAtIndex:[row integerValue]];
+            [sBoxResults insertObject:[sBoxResult objectAtIndex: [col integerValue]] atIndex:j];
+            
+            j++;
+        }
+        
+        // now: cummulate all the sbox results
+        int tmp = 0;
+        for (size_t k = 0; k < [sBoxResults count]; k++) {
+            tmp += [[sBoxResults objectAtIndex: k] integerValue];
+        }
+        
+        // convert that thing to binary again:
+        NSArray *binarySboxResult = [self arrayOfBinaryNumbersForInt: tmp];
+        
+        // permutate that result with P
+        R = [self permutate:binarySboxResult permutation:self->P];
+        
+        // xor R with L
+        R = [self xorTwoNSArrays:R second:L];
+        
+        L = tmpR;
         
         i++;
         
@@ -296,6 +341,10 @@
             iterationNr--;
         }
     }
+    
+    // final permutation
+    NSArray *RL = [R arrayByAddingObjectsFromArray: L];
+    result = [self permutate:RL permutation:self->IP_INVERSE];
     
     return (result);
 }
@@ -312,6 +361,11 @@
     }
     
     return (result);
+}
+
+-(NSNumber*)binaryStringToDecimal: (NSString*) string {
+    long v = strtol([string UTF8String], NULL, 2);
+    return [NSNumber numberWithLong:v];
 }
 
 static NSMutableArray *shiftArray(NSArray *array)
@@ -333,6 +387,289 @@ static NSMutableArray *shiftArray(NSArray *array)
     [result insertObject:first atIndex:[array count]-1];
     
     return (result);
+}
+
+-(void)initNumbers {
+    // [6, 4, 7, 3, 5, 1, 8, 2]
+    self->P =   [NSArray arrayWithObjects:
+                 [NSNumber numberWithInt:6],
+                 [NSNumber numberWithInt:4],
+                 [NSNumber numberWithInt:7],
+                 [NSNumber numberWithInt:3],
+                 [NSNumber numberWithInt:5],
+                 [NSNumber numberWithInt:1],
+                 [NSNumber numberWithInt:8],
+                 [NSNumber numberWithInt:2],
+                 nil];
+    
+    //11, 15, 4, 13, 7, 9, 3, 2, 5, 14, 6, 10, 12, 1
+    self->PC1 = [NSArray arrayWithObjects:  [NSNumber numberWithInt:11],
+                 [NSNumber numberWithInt:15],
+                 [NSNumber numberWithInt:4],
+                 [NSNumber numberWithInt:13],
+                 [NSNumber numberWithInt:7],
+                 [NSNumber numberWithInt:9],
+                 [NSNumber numberWithInt:3],
+                 [NSNumber numberWithInt:2],
+                 [NSNumber numberWithInt:5],
+                 [NSNumber numberWithInt:14],
+                 [NSNumber numberWithInt:6],
+                 [NSNumber numberWithInt:10],
+                 [NSNumber numberWithInt:12],
+                 [NSNumber numberWithInt:1],
+                 nil];
+    
+    //6, 11, 4, 8, 13, 3, 12, 5, 1, 10, 2, 9
+    self->PC2 = [NSArray arrayWithObjects:  [NSNumber numberWithInt:6],
+                 [NSNumber numberWithInt:11],
+                 [NSNumber numberWithInt:4],
+                 [NSNumber numberWithInt:8],
+                 [NSNumber numberWithInt:13],
+                 [NSNumber numberWithInt:3],
+                 [NSNumber numberWithInt:12],
+                 [NSNumber numberWithInt:5],
+                 [NSNumber numberWithInt:1],
+                 [NSNumber numberWithInt:10],
+                 [NSNumber numberWithInt:2],
+                 [NSNumber numberWithInt:9],
+                 nil];
+    
+    //{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1}
+    self->LEFT_ROTATIONS = [NSArray arrayWithObjects:   [NSNumber numberWithInt:1],
+                            [NSNumber numberWithInt:1],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:1],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:2],
+                            [NSNumber numberWithInt:1],
+                            nil];
+    
+    //{10, 6, 14, 2, 8, 16, 12, 4, 1, 13, 7, 9, 5, 11, 3, 15}
+    self->IP = [NSArray arrayWithObjects:
+                [NSNumber numberWithInt:10],
+                [NSNumber numberWithInt:6],
+                [NSNumber numberWithInt:14],
+                [NSNumber numberWithInt:2],
+                [NSNumber numberWithInt:8],
+                [NSNumber numberWithInt:16],
+                [NSNumber numberWithInt:12],
+                [NSNumber numberWithInt:4],
+                [NSNumber numberWithInt:1],
+                [NSNumber numberWithInt:13],
+                [NSNumber numberWithInt:7],
+                [NSNumber numberWithInt:9],
+                [NSNumber numberWithInt:5],
+                [NSNumber numberWithInt:11],
+                [NSNumber numberWithInt:3],
+                [NSNumber numberWithInt:15],
+                nil];
+    
+    //{9, 4, 15, 8, 13, 2, 11, 5, 12, 1, 14, 7, 10, 3, 16, 6}
+    self->IP_INVERSE = [NSArray arrayWithObjects:
+                        [NSNumber numberWithInt:9],
+                        [NSNumber numberWithInt:4],
+                        [NSNumber numberWithInt:15],
+                        [NSNumber numberWithInt:8],
+                        [NSNumber numberWithInt:13],
+                        [NSNumber numberWithInt:2],
+                        [NSNumber numberWithInt:11],
+                        [NSNumber numberWithInt:5],
+                        [NSNumber numberWithInt:12],
+                        [NSNumber numberWithInt:1],
+                        [NSNumber numberWithInt:14],
+                        [NSNumber numberWithInt:7],
+                        [NSNumber numberWithInt:10],
+                        [NSNumber numberWithInt:3],
+                        [NSNumber numberWithInt:16],
+                        [NSNumber numberWithInt:6],
+                        nil];
+    
+    //{8, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 1}
+    self->EXPANSION = [NSArray arrayWithObjects:
+                       [NSNumber numberWithInt:8],
+                       [NSNumber numberWithInt:1],
+                       [NSNumber numberWithInt:2],
+                       [NSNumber numberWithInt:3],
+                       [NSNumber numberWithInt:4],
+                       [NSNumber numberWithInt:5],
+                       [NSNumber numberWithInt:4],
+                       [NSNumber numberWithInt:5],
+                       [NSNumber numberWithInt:6],
+                       [NSNumber numberWithInt:7],
+                       [NSNumber numberWithInt:8],
+                       [NSNumber numberWithInt:1],
+                       nil];
+    
+    self->SBOXES = [NSArray arrayWithObjects:
+                    // SBOX 1
+                    [NSArray arrayWithObjects:
+                     [NSArray arrayWithObjects:
+                      // row 0: [14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7]
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 7],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 1: [0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8]
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 8],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 2: [4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0]
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 0],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 3: [15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13]
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 13],
+                      nil],
+                     nil],
+                    // SBOX 2
+                    [NSArray arrayWithObjects:
+                     [NSArray arrayWithObjects:
+                      // row 0: [15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 10],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 1: [3, 13, 4, 7, 15, 2, 8, 14, 12, 0, 1, 10, 6, 9, 11, 5]
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 5],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 2: [0, 14, 7, 11, 10, 4, 13, 1, 5, 8, 12, 6, 9, 3, 2, 15]
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 9],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 15],
+                      nil],
+                     [NSArray arrayWithObjects:
+                      // row 3: [13, 8, 10, 1, 3, 15, 4, 2, 11, 6, 7, 12, 0, 5, 14, 9]
+                      [NSNumber numberWithInt: 13],
+                      [NSNumber numberWithInt: 8],
+                      [NSNumber numberWithInt: 10],
+                      [NSNumber numberWithInt: 1],
+                      [NSNumber numberWithInt: 3],
+                      [NSNumber numberWithInt: 15],
+                      [NSNumber numberWithInt: 4],
+                      [NSNumber numberWithInt: 2],
+                      [NSNumber numberWithInt: 11],
+                      [NSNumber numberWithInt: 6],
+                      [NSNumber numberWithInt: 7],
+                      [NSNumber numberWithInt: 12],
+                      [NSNumber numberWithInt: 0],
+                      [NSNumber numberWithInt: 5],
+                      [NSNumber numberWithInt: 14],
+                      [NSNumber numberWithInt: 9],
+                      nil],
+                     nil],
+                    nil];
+
 }
 
 @end

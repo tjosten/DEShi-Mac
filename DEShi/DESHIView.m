@@ -41,12 +41,39 @@
     }
 
     DEShi *deshi = [[DEShi alloc] initWithKeyAndMessage:[key stringValue] message:[message stringValue]];
-    [deshi encrypt];
-
+    NSString *cryptoText = [deshi encrypt];
+    
+    [cipher setString:cryptoText];
 }
 
 - (IBAction) decrypt:(id)sender {
+
+    if ([[key stringValue] length] != 2) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Error"];
+        [alert setInformativeText:@"You have to enter a key with length 16-bit."];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:[key window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        return;
+    }
+ 
+    if ([[cipher string] length] == 0) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Error"];
+        [alert setInformativeText:@"You have to enter a cipher text if you want to decrypt something."];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:[key window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        return;
+    }
     
+    // clear message if entered previously
+    [message setStringValue:@""];
+
+    DEShi *deshi = [[DEShi alloc] initWithKeyAndCipher:[key stringValue] cipherText:[cipher string]];
+    NSString *decrypted = [deshi decrypt];
+    [message setStringValue:decrypted];
 }
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
