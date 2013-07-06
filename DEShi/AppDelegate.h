@@ -12,4 +12,8 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
+- (IBAction)closeApplication:(id)sender;
+- (void)windowWillClose:(NSNotification *)notification;
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication;
+
 @end

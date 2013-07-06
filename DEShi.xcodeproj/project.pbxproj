@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		329D080C178813A8001D7E57 /* DEShi.m in Sources */ = {isa = PBXBuildFile; fileRef = 329D080B178813A8001D7E57 /* DEShi.m */; };
 		32F2DDEE17880C3000FA8E36 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F2DDED17880C3000FA8E36 /* Cocoa.framework */; };
 		32F2DDF817880C3000FA8E36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 32F2DDF617880C3000FA8E36 /* InfoPlist.strings */; };
 		32F2DDFA17880C3000FA8E36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F2DDF917880C3000FA8E36 /* main.m */; };
 		32F2DDFE17880C3000FA8E36 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 32F2DDFC17880C3000FA8E36 /* Credits.rtf */; };
 		32F2DE0117880C3000FA8E36 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F2DE0017880C3000FA8E36 /* AppDelegate.m */; };
 		32F2DE0417880C3000FA8E36 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 32F2DE0217880C3000FA8E36 /* MainMenu.xib */; };
+		32F2DE0C17880C6700FA8E36 /* DESHIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F2DE0B17880C6700FA8E36 /* DESHIView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		329D080A178813A8001D7E57 /* DEShi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEShi.h; sourceTree = "<group>"; };
+		329D080B178813A8001D7E57 /* DEShi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEShi.m; sourceTree = "<group>"; };
 		32F2DDE917880C3000FA8E36 /* DEShi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DEShi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F2DDED17880C3000FA8E36 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		32F2DDF017880C3000FA8E36 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -29,6 +33,8 @@
 		32F2DDFF17880C3000FA8E36 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		32F2DE0017880C3000FA8E36 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		32F2DE0317880C3000FA8E36 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		32F2DE0A17880C6700FA8E36 /* DESHIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DESHIView.h; sourceTree = "<group>"; };
+		32F2DE0B17880C6700FA8E36 /* DESHIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DESHIView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +92,10 @@
 				32F2DE0017880C3000FA8E36 /* AppDelegate.m */,
 				32F2DE0217880C3000FA8E36 /* MainMenu.xib */,
 				32F2DDF417880C3000FA8E36 /* Supporting Files */,
+				32F2DE0A17880C6700FA8E36 /* DESHIView.h */,
+				32F2DE0B17880C6700FA8E36 /* DESHIView.m */,
+				329D080A178813A8001D7E57 /* DEShi.h */,
+				329D080B178813A8001D7E57 /* DEShi.m */,
 			);
 			path = DEShi;
 			sourceTree = "<group>";
@@ -168,6 +178,8 @@
 			files = (
 				32F2DDFA17880C3000FA8E36 /* main.m in Sources */,
 				32F2DE0117880C3000FA8E36 /* AppDelegate.m in Sources */,
+				32F2DE0C17880C6700FA8E36 /* DESHIView.m in Sources */,
+				329D080C178813A8001D7E57 /* DEShi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +309,7 @@
 				32F2DE0917880C3000FA8E36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

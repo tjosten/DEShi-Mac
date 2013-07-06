@@ -12,7 +12,19 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    NSLog(@"LAUNCH FINISHED");
+}
+
+-(IBAction)closeApplication:(id)sender {
+    NSLog(@"CLOSE APPLICATION");    
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+    NSLog(@"YEP!");
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+    return YES;
 }
 
 @end
