@@ -13,7 +13,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        
+        pasteBoard = [NSPasteboard generalPasteboard];
     }
     return (self);
 }
@@ -44,6 +44,10 @@
     NSString *cryptoText = [deshi encrypt];
     
     [cipher setString:cryptoText];
+    
+    // write cipher to pasteboard
+    [pasteBoard clearContents];
+    [pasteBoard writeObjects:[NSArray arrayWithObject:[NSString stringWithString:cryptoText]]];
 }
 
 - (IBAction) decrypt:(id)sender {

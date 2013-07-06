@@ -13,6 +13,7 @@
     IBOutlet NSTextField *message;
     IBOutlet NSTextField *key;
     IBOutlet NSTextView *cipher;
+    NSPasteboard *pasteBoard;
 }
 
 - (IBAction) encrypt: (id) sender;
