@@ -10,11 +10,15 @@
 
 @implementation DEShi
 
+// "constructor" for encryption
 -(id)initWithKeyAndMessage: (NSString*)varKey
                    message: (NSString*) varMessage {
     if (self = [super init]) {
-
+        
+        // initialize numbers required for crypto stuff
         [self initNumbers];
+        
+        // setting instance variables
         self->encKey = [varKey copy];
         self->message = [varMessage copy];
         
@@ -26,11 +30,9 @@
         for (i = 0; i < [self->encKey length]; i++) {
             [keyBinaryTmp addObjectsFromArray:[self arrayOfBinaryNumbersForInt:[self->encKey characterAtIndex:i]]];
         }
-        
         self->keyBinary = keyBinaryTmp;
-        
-        //NSLog(@"Converted key to binary array: %@", self->keyBinary);
-        
+    
+        // initializing subkeys instance array
         self->subKeys = [NSMutableArray arrayWithCapacity:16];
         
         // generate subkeys
@@ -39,11 +41,15 @@
     return (self);
 }
 
+// "constructor" for decryption
 -(id)initWithKeyAndCipher: (NSString*)varKey
                    cipherText: (NSString*) varCipher {
     if (self = [super init]) {
         
+        // initialize numbers required for crypto stuff
         [self initNumbers];
+        
+        // setting instance variables
         self->encKey = [varKey copy];
         self->cipher = [varCipher copy];
         
@@ -55,11 +61,9 @@
         for (i = 0; i < [self->encKey length]; i++) {
             [keyBinaryTmp addObjectsFromArray:[self arrayOfBinaryNumbersForInt:[self->encKey characterAtIndex:i]]];
         }
-        
         self->keyBinary = keyBinaryTmp;
         
-        //NSLog(@"Converted key to binary array: %@", self->keyBinary);
-        
+        // initializing subkeys instance array
         self->subKeys = [NSMutableArray arrayWithCapacity:16];
         
         // generate subkeys
@@ -69,16 +73,17 @@
 }
 
 
+// convert an integer value to an array of binary numbers representating that int
 -(NSArray*) arrayOfBinaryNumbersForInt: (int) integer {
-    //NSLog(@"%d", integer);
     
     NSMutableString *string = [NSMutableString string];
     for(NSInteger numberCopy = integer; numberCopy > 0; numberCopy >>= 1)
     {
-        // Prepend "0" or "1", depending on the bit
+        // prepend "0" or "1", depending on the bit
         [string insertString:((numberCopy & 1) ? @"1," : @"0,") atIndex:0];
     }
 
+    // is that string 8 bit long? if not, fill it with leading zeros
     if ([string length]/2 != 8) {
         int requiredShifts = 8 - [string length]/2;
         for (size_t i = 0; i < requiredShifts; i++) {
@@ -87,17 +92,24 @@
     }
     
     NSString *finalString = [NSString stringWithString:string];
+    
+    // remove the final comma of the string
     finalString = [finalString substringToIndex:([string length] - 1)];
+
+    // convert the comma separated string to an NSArray
     NSArray *result = [finalString componentsSeparatedByString:@","];
-    //NSLog(@"arrayOfBinaryNumbersForInt: %@", result);
     
     return (result);
 }
 
+// permutate a given NSArray message with given NSArray permutation
 -(NSArray*)permutate:  (NSArray *)message
                         permutation:(NSArray*)permutation{
     
+    // initialize the output array with capacity of permutation array
     NSMutableArray *permutatedArray = [NSMutableArray arrayWithCapacity:[permutation count]];
+    
+    // permutate!
     for (size_t i = 0; i < [permutation count]; i++) {
         NSNumber *newIndexNumber = [permutation objectAtIndex:i];
         int newIndex = [newIndexNumber intValue] - 1;
@@ -107,25 +119,25 @@
     return permutatedArray;
 }
 
+// generate a set of 16 subkeys out of given encryption/decryption key
 -(void)generateSubkeys {
     
+    // allocate memory for the subkeys
     self->subKeys = [[NSMutableArray alloc] initWithCapacity:16];
-    
+
+    // permutate the key with PC1, so it's 14 bit long
     NSArray *permutatedKey = [self permutate:self->keyBinary permutation:self->PC1];
     
+    // devide the key in 2 parts with len 7
     NSArray *leftPart = [permutatedKey subarrayWithRange:NSMakeRange(0, 7)];
     NSArray *rightPart = [permutatedKey subarrayWithRange:NSMakeRange(7, 7)];
     
     // calculate the 16 subkeys
     int i = 0;
     while (i < 16) {
-        // left shifts
-    
+
+        // do the required left shifts
         NSInteger shifts = [[self->LEFT_ROTATIONS objectAtIndex: i] integerValue];
-        
-        //NSLog(@"round %d", i);
-        //NSLog(@"before: L: %@ R: %@", leftPart, rightPart);
-        
         int j = 0;
         while (j < shifts) {
             leftPart = shiftArray(leftPart);
@@ -133,20 +145,17 @@
             j++;
         }
     
-        //NSLog(@"after: L: %@ R: %@", leftPart, rightPart);
-        
+        // merge the two sides again
         NSArray *leftRight = [leftPart arrayByAddingObjectsFromArray: rightPart];
         
-        //NSLog(@"LR: %@", leftRight);
-        
+        // permutate the merged NSArray with PC2 and insert it to instance NSArray
         [self->subKeys insertObject:[self permutate:leftRight permutation:self->PC2] atIndex:i];
         
         i++;
     }
-    
-    //NSLog(@"1st subkey: %@", [self->subKeys objectAtIndex:0]);
 }
 
+// the encryption message
 -(NSString*) encrypt {
     NSMutableString *result = [NSMutableString string];
     
@@ -157,9 +166,6 @@
         NSArray *firstArray = [self arrayOfBinaryNumbersForInt: [self->message characterAtIndex:i]];
         NSArray *secondArray = [firstArray arrayByAddingObjectsFromArray: [self arrayOfBinaryNumbersForInt:[self->message characterAtIndex:i+1]]];
         
-        //NSLog(@"--------------------- encryption ------------------------");
-        //NSLog(@"%@", secondArray);
-        
         NSNumber *left = [self binaryStringToDecimal:[firstArray componentsJoinedByString:@""]];
         NSNumber *right = [self binaryStringToDecimal:[[self arrayOfBinaryNumbersForInt:[self->message characterAtIndex:i+1]] componentsJoinedByString:@""]];
         
@@ -169,28 +175,19 @@
         NSArray *data = [self permutate:secondArray permutation:self->IP];
         NSArray *encrypted_data = [self deshi:data type:0];
         
-        //NSLog(@"Encrypted data: %@", encrypted_data);
-        
         // part this into 2x8 for binary to ascii conversion
         NSArray *leftArray = [encrypted_data subarrayWithRange:NSMakeRange(0, 8)];
         NSArray *rightArray = [encrypted_data subarrayWithRange:NSMakeRange(8, 8)];
-        /*
-        //[result appendString:[NSString stringWithFormat:@"%c", left]];
-        //[result appendString:[NSString stringWithFormat:@"%c", right]];
-        [result appendString: [NSString stringWithFormat:@"%0x", left]];
-        [result appendString: [NSString stringWithFormat:@"%0x", right]];
-        //[result appendString: [[NSString alloc] initWithBytes: &right length: 1 encoding:NSASCIIStringEncoding]];*/
         
         [result appendString: [NSString stringWithString:[leftArray componentsJoinedByString:@""]]];
         [result appendString: [NSString stringWithString:[rightArray componentsJoinedByString:@""]]];
         i+=2;
     }
-    
-    //NSLog(@"final result as string: %@", result);
-    
+
     return (result);
 }
 
+// the decryption message
 -(NSString*) decrypt {
     
     NSMutableString *result = [NSMutableString string];
@@ -203,29 +200,18 @@
         
         NSString *firstPart = [self->cipher substringWithRange:NSMakeRange(i, 8)];
         NSString *secondPart = [self->cipher substringWithRange:NSMakeRange(i+8, 8)];
-        
-        //NSLog(@"first part: %@", firstPart);
-        //NSLog(@"second part: %@", secondPart);
-        
+
         // we first convert them to decimal again, so we can use our own arrayOfBinaryNumbersForInt - that's tricky! :D
         NSNumber *first = [self binaryStringToDecimal:firstPart];
         NSNumber *second = [self binaryStringToDecimal:secondPart];
 
-        //NSLog(@"first int: %ld", [first integerValue]);
-        //NSLog(@"second int: %ld", [second integerValue]);
-        
         NSArray *firstArray = [self arrayOfBinaryNumbersForInt:[first integerValue]];
         NSArray *secondArray = [self arrayOfBinaryNumbersForInt:[second integerValue]];
         
         NSArray *finalArray = [firstArray arrayByAddingObjectsFromArray: secondArray];
         
-        //NSLog(@"--------------------- decryption ------------------------");
-        //NSLog(@"%@", finalArray);
-        
         NSArray *data = [self permutate:finalArray permutation:self->IP];
         NSArray *decrypted_data = [self deshi:data type:1];
-        
-        //NSLog(@"decrypted data: %@", decrypted_data);
         
         // part this into 2x8 for binary to ascii conversion
         NSArray *leftArrayDecrypted = [decrypted_data subarrayWithRange:NSMakeRange(0, 8)];
@@ -233,22 +219,17 @@
         
         NSNumber *left = [self binaryStringToDecimal:[leftArrayDecrypted componentsJoinedByString:@""]];
         NSNumber *right = [self binaryStringToDecimal:[rightArrayDecrypted componentsJoinedByString:@""]];
-        
-        //NSLog(@"left decrypted: %ld", [left integerValue]);
-        //NSLog(@"left ascii: %c", [left integerValue]);
+    
         [result appendFormat:@"%c", [left integerValue]];
-        //NSLog(@"right decrypted: %ld", [right integerValue]);
-        //NSLog(@"right ascii: %c", [right integerValue]);
         [result appendFormat:@"%c", [right integerValue]];
         
         i+=16;
     }
-
-    //NSLog(@"final result as string: %@", result);
     
     return (result);
 }
 
+// the deshi implementation
 -(NSArray*) deshi:(NSArray *)chunk type:(int)type {
     
     int iterationNr;
@@ -262,7 +243,6 @@
     }
     
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:16];
-    
     NSMutableArray *L = [chunk subarrayWithRange:NSMakeRange(0, 8)];
     NSMutableArray *R = [chunk subarrayWithRange:NSMakeRange(8, 8)];
     
@@ -303,9 +283,7 @@
             [colString insertString:[[currentBlock objectAtIndex:3] stringValue] atIndex:2];
             [colString insertString:[[currentBlock objectAtIndex:4] stringValue] atIndex:3];
             NSNumber *col = [self binaryStringToDecimal:colString];
-            
-            //NSLog(@"ROW: %ldd, COL: %ldd", [row integerValue], [col integerValue]);
-            
+                        
             // now fetch the number from the sbox by first getting the currect array
             NSArray *sBox = [self->SBOXES objectAtIndex:j];
             NSArray *sBoxResult = [sBox objectAtIndex:[row integerValue]];
@@ -349,6 +327,7 @@
     return (result);
 }
 
+// xor two given arrays and return the result as NSMutableArray
 -(NSArray*)xorTwoNSArrays:(NSArray *)first second:(NSArray *)second {
     
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:[first count]];
@@ -363,17 +342,16 @@
     return (result);
 }
 
+// convert a string with binary numbers to NSNumber
 -(NSNumber*)binaryStringToDecimal: (NSString*) string {
     long v = strtol([string UTF8String], NULL, 2);
     return [NSNumber numberWithLong:v];
 }
 
+// left-shift given NSArray
 static NSMutableArray *shiftArray(NSArray *array)
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:[array count]];
-    
-    // pre: [1, 0, 1, 0, 1, 0, 1]
-    //post: [0, 1, 0, 1, 0, 1, 1]
     
     // first, we have to remember the first digit
     NSNumber *first = [array objectAtIndex:0];
@@ -389,6 +367,7 @@ static NSMutableArray *shiftArray(NSArray *array)
     return (result);
 }
 
+// initialize the number matrices required for the crypto 
 -(void)initNumbers {
     // [6, 4, 7, 3, 5, 1, 8, 2]
     self->P =   [NSArray arrayWithObjects:
@@ -669,7 +648,6 @@ static NSMutableArray *shiftArray(NSArray *array)
                       nil],
                      nil],
                     nil];
-
 }
 
 @end
